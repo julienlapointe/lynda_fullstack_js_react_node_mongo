@@ -3,7 +3,8 @@
 import React from "react";
 
 import Header3 from "./Header.js";
-import ContestPreview from "./ContestPreview.js";
+import ContestList from "./ContestList.js";
+import Contest from "./Contest.js";
 // import data from "../testData.json";
 
 // constructor(props) {
@@ -46,6 +47,10 @@ import ContestPreview from "./ContestPreview.js";
 
 // note: data.contests is an array of objects (see testData.json to understand why we didn't just pass in "data")
 
+const pushState = (obj, url) => {
+	window.history.pushState(obj, "", url);
+}
+
 class App3 extends React.Component {
 	state = {
 		pageHeader: "Naming Contests",
@@ -57,15 +62,29 @@ class App3 extends React.Component {
 	componentWillUnmount() {
 		
 	}
+	fetchContest = (contestId) => {
+		pushState(
+			{currentContestId: contestId}, 
+			`/contest/${contestId}`
+		);
+		this.setState({
+			pageHeader: this.state.contests[contestId].contestName,
+			currentContestId: contestId
+		});
+	};
+	currentContent() {
+		if (this.state.currentContestId) {
+			return <Contest {...this.state.contests[this.state.currentContestId]} />
+		}
+		return <ContestList
+			onContestClick={this.fetchContest}
+			contests={this.state.contests} />;
+	}
 	render() {
 		return(
 			<div className="App3">
 				<Header3 message3={this.state.pageHeader} />
-				<div>
-					{this.state.contests.map(contest => 
-						<ContestPreview key={contest.id} {...contest} />
-					)}
-				</div>
+				{this.currentContent()}
 			</div>
 		);
 	}
