@@ -1,9 +1,17 @@
 import config from "./config.js";
 import express from "express";
 import fs from "fs";
+import sassMiddleware from "node-sass-middleware";
+import path from "path";
+
 import apiRouter from "./api/index.js";
 
 const server = express();
+
+server.use(sassMiddleware({
+	src: path.join(__dirname, "sass"),
+	dest: path.join(__dirname, "public")
+}));
 
 // server.get("/", (req, res) => {
 // 	res.send("Hello from Express!");

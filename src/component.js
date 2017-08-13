@@ -118,16 +118,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App3 from "./components/App.js";
 import data from "./testData.json";
-console.log(data);
+// console.log(data);
 
+// note: data.contests is an array of objects (see testData.json to understand why we didn't just pass in "data")
 ReactDOM.render(
-	<App3 />,
+	<App3 contests = {data.contests} />,
 	document.getElementById("root7")
 );
 
-setTimeout(() => {
-	ReactDOM.render(
-		<h2>Forced React to unmount the App3 Component after 4s and re-render with this message!</h2>,
-		document.getElementById("root7")
-	);
-}, 4000);
+// setTimeout(() => {
+// 	ReactDOM.render(
+// 		<h2>Forced React to unmount the App3 Component after 4s and re-render with this message!</h2>,
+// 		document.getElementById("root7")
+// 	);
+// }, 4000);
