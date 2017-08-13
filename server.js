@@ -1,10 +1,11 @@
-import config from "./config.js";
 import express from "express";
 import fs from "fs";
 import sassMiddleware from "node-sass-middleware";
 import path from "path";
 
-import apiRouter from "./api/index.js";
+import config from "./config.js";
+import apiRouter from "./api/apiRouter.js";
+import serverRender from "./serverRender.js";
 
 const server = express();
 
@@ -28,10 +29,18 @@ server.use(sassMiddleware({
 server.set("view engine", "ejs");
 
 server.get("/", (req, res) => {
+	serverRender()
+	.then(({initialMarkup, initialData}) => {
+		res.render("index.ejs", {
+			initialMarkup,
+			initialData	
+		});
+	})
+	.catch(console.error);
 	// render an EJS template
-	res.render("index.ejs", {
-		content: "Hello from Express + <strong>EJS</strong>!"
-	});
+	// res.render("index.ejs", {
+	// 	content: "Hello from Express + <strong>EJS</strong>!"
+	// });
 });
 
 // middleware for handling route to API
@@ -39,6 +48,6 @@ server.use("/api", apiRouter);
 
 server.use(express.static("public"));
 
-server.listen(config.port, () => {
+server.listen(config.port, config.host, () => {
 	console.info("Express server is listening on port", config.port);
 });

@@ -116,15 +116,28 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+// import axios from "axios";
+
 import App3 from "./components/App.js";
-import data from "./testData.json";
+// now importing data directly in the App Component (App.js)
+// import data from "./testData.json";
 // console.log(data);
 
-// note: data.contests is an array of objects (see testData.json to understand why we didn't just pass in "data")
-ReactDOM.render(
-	<App3 contests = {data.contests} />,
-	document.getElementById("root7")
-);
+// when props = data loaded from the JSON file
+// <App3 contests = {data.contests} />,
+
+// when props = data from an API, props must start as an object w/ an empty array {[]} and then populate the array when the data is received (see App.js)
+
+// axios.get("/api/contests")
+// .then(res => {
+// 	console.log(res.data.contests);
+	// note: data.contests is an array of objects (see testData.json to understand why we didn't just pass in "data")
+	ReactDOM.render(
+		<App3 initialContests={window.initialData.contests} />,
+		document.getElementById("root7")
+	);
+// })
+// .catch(console.error)
 
 // setTimeout(() => {
 // 	ReactDOM.render(
